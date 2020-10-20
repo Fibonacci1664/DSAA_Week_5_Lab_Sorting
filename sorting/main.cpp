@@ -22,6 +22,13 @@ using std::ofstream;
 using std::sort;
 using std::vector;
 
+// Define the alias "the_clock" for the clock type we're going to use.
+// (You can change this to make the code below use a different clock.)
+typedef std::chrono::steady_clock the_clock;
+
+float sum = 0;
+
+
 // Put "count" random integers in the range (0, 99) into "collection".
 // (This is templated so it'll work with any collection type that has push_back.)
 template <typename T>
@@ -76,24 +83,54 @@ int main(int argc, char *argv[])
 {
 	srand((unsigned int) time(NULL));		// Seed the rng.
 
-	const int num_values = 20;
+	int num_values = 10000;
 
-	cout << "Sorting " << num_values << " integers\n";
+	while (num_values <= 100000)
+	{
+		cout << "Sorting " << num_values << " integers\n";
 
-	list<int> input;
-	MakeRandomValues(input, num_values);
-	cout << "Before sorting: ";
-	ShowValues(input);
+		list<int> input;
+		MakeRandomValues(input, num_values);
+		//cout << "Before sorting: ";
+		//ShowValues(input);
 
-	// Sort the list.
-	list<int> output = input;
-	output.sort();
+		// Sort the list.
+		list<int> output = input;
 
-	cout << "After sorting: ";
-	ShowValues(output);
-	AssertSorted(output);
+		// Start timing
+		the_clock::time_point start = the_clock::now();
+		output.sort();
+		// Stop timing
+		the_clock::time_point end = the_clock::now();
+
+		// Compute the difference between the two times in milliseconds
+		auto time_taken = duration_cast<milliseconds>(end - start).count();
+		cout << "Time taken to sort " << num_values << " intergers = " << time_taken << " ms.\n\n";
+
+		//cout << "After sorting: ";
+		//ShowValues(output);
+		AssertSorted(output);
+
+		num_values += 10000;
+	}
+
+	
+
+	
+
+	
+
+	
 
 	cout << "All OK!\n";
 
 	return 0;
 }
+
+
+
+
+
+
+
+
