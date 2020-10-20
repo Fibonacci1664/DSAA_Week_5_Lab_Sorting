@@ -27,6 +27,7 @@ using std::vector;
 typedef std::chrono::steady_clock the_clock;
 
 float sum = 0;
+ofstream intSortingTimes("intSortingTimes.csv");
 
 
 // Put "count" random integers in the range (0, 99) into "collection".
@@ -85,9 +86,12 @@ int main(int argc, char *argv[])
 
 	int num_values = 10000;
 
+	cout << "Number of Items\t\t\t\t\tTime to Sort\n\n";
+	intSortingTimes << "Number of Items, Time to Sort\n";
+
 	while (num_values <= 100000)
 	{
-		cout << "Sorting " << num_values << " integers\n";
+		//cout << "Sorting " << num_values << " integers\n";
 
 		list<int> input;
 		MakeRandomValues(input, num_values);
@@ -105,7 +109,10 @@ int main(int argc, char *argv[])
 
 		// Compute the difference between the two times in milliseconds
 		auto time_taken = duration_cast<milliseconds>(end - start).count();
-		cout << "Time taken to sort " << num_values << " intergers = " << time_taken << " ms.\n\n";
+		//cout << "Time taken to sort " << num_values << " intergers = " << time_taken << " ms.\n\n";
+
+		cout << num_values << "\t\t\t\t\t\t" << time_taken << "ms\n\n";
+		intSortingTimes << num_values << ", " << time_taken << "ms\n";
 
 		//cout << "After sorting: ";
 		//ShowValues(output);
@@ -113,14 +120,6 @@ int main(int argc, char *argv[])
 
 		num_values += 10000;
 	}
-
-	
-
-	
-
-	
-
-	
 
 	cout << "All OK!\n";
 
